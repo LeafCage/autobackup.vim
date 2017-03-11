@@ -6,7 +6,7 @@
 
 
 ##使い方
-このプラグインは 'patchmode' で作成されたファイルを`g:autobackup_dir`で指定されたディレクトリにリネームしています。オプション 'patchmode' に空でない文字列を指定してください。'backupdir' も忘れずに設定してください。  
+このプラグインは 'patchmode' で作成されたファイルを`g:autobackup_backup_dir`で指定されたディレクトリにリネームしています。オプション 'patchmode' に空でない文字列を指定してください。'backupdir' も忘れずに設定してください。  
 
 ```vim
 set patchmode=.vabk

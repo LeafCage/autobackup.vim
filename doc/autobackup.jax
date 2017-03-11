@@ -45,9 +45,9 @@ https://github.com/LeafCage/autobackup.vim
 ==============================================================================
 使い方						*autobackup-usage*
 
-このプラグインは 'patchmode' で作成されたファイルを|g:autobackup_dir|で指定さ
-れたディレクトリにリネームしています。オプション 'patchmode' に空でない文字列
-を指定してください。'backupdir' も忘れずに設定してください。 >
+このプラグインは 'patchmode' で作成されたファイルを|g:autobackup_backup_dir|で
+指定されたディレクトリにリネームしています。オプション 'patchmode' に空でない
+文字列を指定してください。'backupdir' も忘れずに設定してください。 >
 	set patchmode=.vabk
 'patchmode' の文字列はバックアップファイルの拡張子として使われます。この例です
 と、"test.txt" は例えば "test.txt.0001.vabk" や "test.txt.0002.vabk" のような

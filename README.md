@@ -2,20 +2,32 @@
 ファイルを保存する度に指定ディレクトリにバックアップを残す。
 
 ###概要
-*autobackup* はファイルを保存する度に過去のファイルをナンバリングして指定したディレクトリに自動保存するプラグインです。`savevers.vim`をリスペクトして作成されましたが、オリジナルより軽量です。  
+*autobackup* はファイルを保存する度に過去のファイルをナンバリングして指定したディレクトリに自動保存するプラグインです。  
+例えば、"test.txt" というファイルを保存する度に指定したディレクトリに "test.txt.0001" "test.txt.0002" という名前でバックアップが作成されます。   
+`savevers.vim`をリスペクトして作成されましたが、オリジナルより軽量です。  
+
+最新版:  
+https://github.com/LeafCage/autobackup.vim  
 
 
 ##使い方
-このプラグインは 'patchmode' で作成されたファイルを`g:autobackup_backup_dir`で指定されたディレクトリにリネームしています。オプション 'patchmode' に空でない文字列を指定してください。'backupdir' も忘れずに設定してください。  
+このプラグインは Vimのオプション 'backupdir' が空だと動きません。はじめに 'backupdir' が設定されているかどうかご確認ください。  
+
+`g:autobackup_backup_dir`でバックアップする場所を指定します。  
 
 ```vim
-set patchmode=.vabk
+let g:autobackup_backup_dir = "~/mybackup"
 ```
 
-'patchmode' の文字列はバックアップファイルの拡張子として使われます。この例ですと、"test.txt" は例えば "test.txt.0001.vabk" や "test.txt.0002.vabk" のような名前でバックアップされます。  
+
+`g:autobackup_backup_naming`を "cpath" にするとファイルのフルパスを変換した名前でバックアップファイルが作成されます。こうすると同じ名前のファイルを区別して保存することができます。  
+
+```vim
+let g:autobackup_backup_naming = "cpath"
+```
 
 
-バックアップファイル自体をバックアップ対象やファイル名補完から除外するために、 'backupskip' 'wildignore' を設定することができます。  
+バックアップファイル自体をバックアップ対象やファイル名補完から除外するために、 'backupskip' 'wildignore' を設定するとよいでしょう。  
 
 ```vim
 exe "set backupskip+=*". &patchmode

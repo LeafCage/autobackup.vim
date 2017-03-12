@@ -35,8 +35,12 @@ License : MIT license  {{{
 概要						*autobackup-introduction*
 
 *autobackup* はファイルを保存する度に過去のファイルをナンバリングして指定した
-ディレクトリに自動保存するプラグインです。|savevers.vim|をリスペクトして作成さ
-れましたが、オリジナルより軽量です。
+ディレクトリに自動保存するプラグインです。
+例えば、"/home/user/test.txt" というファイルを保存する度に指定したディレクトリ
+に "%home%user%test.txt.0001" "%home%user%test.txt.0002" という形でバックアッ
+プが作成されます。
+
+|savevers.vim|をリスペクトして作成されましたが、オリジナルより軽量です。
 
 最新版:
 https://github.com/LeafCage/autobackup.vim
@@ -45,16 +49,19 @@ https://github.com/LeafCage/autobackup.vim
 ==============================================================================
 使い方						*autobackup-usage*
 
-このプラグインは 'patchmode' で作成されたファイルを|g:autobackup_backup_dir|で
-指定されたディレクトリにリネームしています。オプション 'patchmode' に空でない
-文字列を指定してください。'backupdir' も忘れずに設定してください。 >
-	set patchmode=.vabk
-'patchmode' の文字列はバックアップファイルの拡張子として使われます。この例です
-と、"test.txt" は例えば "test.txt.0001.vabk" や "test.txt.0002.vabk" のような
-名前でバックアップされます。
+このプラグインは Vimのオプション 'backupdir' が空だと動きません。はじめに
+'backupdir' が設定されているかどうかご確認ください。
+
+|g:autobackup_backup_dir|でバックアップする場所を指定します。 >
+	let g:autobackup_backup_dir = "~/mybackup"
+
+|g:autobackup_backup_naming|を "cpath" にするとファイルのフルパスを変換した名
+前でバックアップファイルが作成されます。こうすると同じ名前のファイルを区別して
+保存することができます。 >
+	let g:autobackup_backup_naming = "cpath"
 
 バックアップファイル自体をバックアップ対象やファイル名補完から除外するために、
-'backupskip' 'wildignore' を設定することができます。 >
+'backupskip' 'wildignore' を設定するとよいでしょう。 >
 	exe "set backupskip+=*". &patchmode
 	exe "set wildignore+=". &patchmode
 
@@ -77,6 +84,20 @@ g:autobackup_pattern				*g:autobackup_pattern*
 g:autobackup_backup_dir				*g:autobackup_backup_dir*
 	既定値: "~/.backup/vim-autobackup"
 	このディレクトリ以下にバックアップが作成される。
+
+
+g:autobackup_backup_naming			*g:autobackup_backup_naming*
+	既定値: "filename"
+	バックアップファイルのネーミングモードを指定する。以下の文字列から選ぶ
+	。これ以外の文字が使われたときは "filename" と見なされる。
+	文字列		命名規則	名前例~
+	------		--------	------~
+	"filename"	ファイル名	"test.txt.0001"
+	"cpath"		変換されたパス	"%home%usrname%work%test.txt.0001"
+
+	"filename" だと同名のファイルを区別しないので異なるファイルが同じ名前
+	でバックアップされることが起こりうる。
+	"cpath" だとはパス区切りを "%" に変換するのでその心配はない。
 
 
 g:autobackup_config_dir				*g:autobackup_config_dir*

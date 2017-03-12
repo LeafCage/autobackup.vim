@@ -25,11 +25,3 @@ let g:autobackup_backup_dir = "~/mybackup"
 ```vim
 let g:autobackup_backup_limit = 50
 ```
-
-
-バックアップファイル自体をバックアップ対象やファイル名補完から除外するために、 'backupskip' 'wildignore' を設定するとよいでしょう。  
-
-```vim
-exe "set backupskip+=*". &patchmode
-exe "set wildignore+=". &patchmode
-```

@@ -2,21 +2,14 @@ if expand('<sfile>:p')!=#expand('%:p') && exists('g:loaded_autobackup')| finish|
 let s:save_cpo = &cpo| set cpo&vim
 scriptencoding utf-8
 "=============================================================================
-let g:autobackup_pattern = get(g:, 'autobackup_pattern', '*')
 let g:autobackup_backup_dir = get(g:, 'autobackup_backup_dir', '~/.backup/vim-autobackup')
 let g:autobackup_backup_limit = get(g:, 'autobackup_backup_limit', 100)
 let g:autobackup_config_dir = get(g:, 'autobackup_config_dir', '~/.config/vim/autobackup')
 
-if g:autobackup_pattern==''
-  finish
-elseif g:autobackup_pattern !~ '^\%(\f\|[,\*]\)\+$'
-  echoerr 'invalid pattern g:autobackup_pattern : '. g:autobackup_pattern
-  finish
-end
 augroup autobackup
    autocmd!
-   exe 'au BufWritePre,FileWritePre,FileAppendPre' g:autobackup_pattern 'call autobackup#pre()'
-   exe 'au BufWritePost,FileWritePost,FileAppendPost' g:autobackup_pattern 'call autobackup#post()'
+   au BufWritePre,FileWritePre,FileAppendPre * call autobackup#pre()
+   au BufWritePost,FileWritePost,FileAppendPost * call autobackup#post()
 augroup END
 
 "=============================================================================

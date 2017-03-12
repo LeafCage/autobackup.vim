@@ -58,10 +58,12 @@ https://github.com/LeafCage/autobackup.vim
 古いものから削除されます。 >
 	let g:autobackup_backup_limit = 50
 
-バックアップファイル自体をバックアップ対象やファイル名補完から除外するために、
-'backupskip' 'wildignore' を設定するとよいでしょう。 >
+NOTE: バックアップファイル自体をバックアップ対象やファイル名補完から除外するた
+めに、'backupskip' 'wildignore' を設定するとよいでしょう。 >
 	exe "set backupskip+=*". &patchmode
 	exe "set wildignore+=". &patchmode
+
+NOTE: 'backupskip' にマッチしたファイルはバックアップが作られません。
 
 
 ==============================================================================
@@ -69,18 +71,6 @@ https://github.com/LeafCage/autobackup.vim
 
 ------------------------------------------------------------------------------
 変数						*autobackup-variables*
-
-g:autobackup_pattern				*g:autobackup_pattern*
-	既定値: "*"
-	ファイルネームパターン|autocmd-patterns|をコンマ区切りで指定する。この
-	パターンにマッチするファイルのバックアップを作成する。既定は "*" (全て
-	のファイル)である。
-	例) C言語のファイルと Vim script だけを対象にしたいとき >
-		let g:autobackup_pattern = "*.c,*.h,*.vim"
-
-<	これにマッチしても、'backupskip' にもマッチしたらバックアップは作られ
-	ない。
-
 
 g:autobackup_backup_dir				*g:autobackup_backup_dir*
 	既定値: "~/.backup/vim-autobackup"

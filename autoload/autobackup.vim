@@ -12,13 +12,13 @@ function! autobackup#pre() "{{{
   end
   let filename = expand('<afile>:t')
   let dir = fnamemodify(g:autobackup_config_dir, ':p')
-  if !(isdirectory(dir) && isdirectory(dir. 'nextnums/'))
-    call mkdir(dir. '/nextnums', 'p')
+  if !(isdirectory(dir) && isdirectory(dir. 'numbers/'))
+    call mkdir(dir. '/numbers', 'p')
   end
-  let path = dir. '/nextnums/'. filename
-  let s:nextnum = filereadable(path) ? get(readfile(path), 0, 1) : 1
+  let path = dir. '/numbers/'. filename
+  let s:num = (filereadable(path) ? get(readfile(path), 0, 0) : 0) + 1
   let s:save_patchmode = &patchmode
-  let &patchmode = printf('.%04s%s', s:nextnum, &patchmode)
+  let &patchmode = printf('.%04s%s', s:num, &patchmode)
 endfunction
 "}}}
 function! s:make_bcudir() "{{{
@@ -40,14 +40,14 @@ function! autobackup#post() "{{{
   let bcupath = s:bcudir. filename. &patchmode
   let &patchmode = s:save_patchmode
   if filereadable(bcupath)
-    let s:nextnum = s:get_nextnum(filename, s:nextnum+1)
-    let bcupath = printf('%s%s.%04s%s', s:bcudir, filename, s:nextnum, &patchmode)
+    let s:num = s:get_nextnum(filename, s:num+1)
+    let bcupath = printf('%s%s.%04s%s', s:bcudir, filename, s:num, &patchmode)
   end
   if filereadable(patchmodepath)
     call rename(patchmodepath, bcupath)
-    call writefile([s:nextnum+1], fnamemodify(g:autobackup_config_dir, ':p'). '/nextnums/'. filename)
+    call writefile([s:num], fnamemodify(g:autobackup_config_dir, ':p'). '/numbers/'. filename)
   end
-  unlet! s:save_patchmode s:nextnum
+  unlet! s:save_patchmode s:num
 endfunction
 "}}}
 function! s:get_nextnum(filename, num) "{{{
@@ -61,11 +61,11 @@ endfunction
 
 function! autobackup#cmpl_reset_number(arglead, cmdline, csrpos) "{{{
   let cmpl = __autobackup#lim#cmddef#newCmpl(substitute(a:cmdline, '\t', ' ', 'g'), a:csrpos)
-  return cmpl.filtered(map(split(globpath(g:autobackup_config_dir. '/nextnums/', '*'), '\n'), 'fnamemodify(v:val, ":t")'))
+  return cmpl.filtered(map(split(globpath(g:autobackup_config_dir. '/numbers/', '*'), '\n'), 'fnamemodify(v:val, ":t")'))
 endfunction
 "}}}
 function! autobackup#reset_number(...) "{{{
-  let dir = fnamemodify(g:autobackup_config_dir, ':p'). 'nextnums/'
+  let dir = fnamemodify(g:autobackup_config_dir, ':p'). 'numbers/'
   if a:0 == 1
     for path in split(globpath(dir, a:1), '\n')
       call delete(path)

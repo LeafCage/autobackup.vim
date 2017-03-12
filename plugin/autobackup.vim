@@ -5,6 +5,7 @@ scriptencoding utf-8
 let g:autobackup_pattern = get(g:, 'autobackup_pattern', '*')
 let g:autobackup_backup_dir = get(g:, 'autobackup_backup_dir', '~/autobackup-vim')
 let g:autobackup_config_dir = get(g:, 'autobackup_config_dir', '~/.config/vim/autobackup')
+
 if g:autobackup_pattern==''
   finish
 elseif g:autobackup_pattern !~ '^\%(\f\|[,\*]\)\+$'

@@ -20,13 +20,6 @@ let g:autobackup_backup_dir = "~/mybackup"
 ```
 
 
-`g:autobackup_backup_naming`を "cpath" にするとファイルのフルパスを変換した名前でバックアップファイルが作成されます。こうすると同じ名前のファイルを区別して保存することができます。  
-
-```vim
-let g:autobackup_backup_naming = "cpath"
-```
-
-
 バックアップファイル自体をバックアップ対象やファイル名補完から除外するために、 'backupskip' 'wildignore' を設定するとよいでしょう。  
 
 ```vim

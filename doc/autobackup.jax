@@ -28,7 +28,6 @@ License : MIT license  {{{
 使い方				|autobackup-usage|
 インターフェイス		|autobackup-interface|
   変数				  |autobackup-variables|
-  コマンド			  |autobackup-commands|
 
 
 ==============================================================================
@@ -54,11 +53,6 @@ https://github.com/LeafCage/autobackup.vim
 
 |g:autobackup_backup_dir|でバックアップする場所を指定します。 >
 	let g:autobackup_backup_dir = "~/mybackup"
-
-|g:autobackup_backup_naming|を "cpath" にするとファイルのフルパスを変換した名
-前でバックアップファイルが作成されます。こうすると同じ名前のファイルを区別して
-保存することができます。 >
-	let g:autobackup_backup_naming = "cpath"
 
 バックアップファイル自体をバックアップ対象やファイル名補完から除外するために、
 'backupskip' 'wildignore' を設定するとよいでしょう。 >
@@ -86,46 +80,9 @@ g:autobackup_backup_dir				*g:autobackup_backup_dir*
 	このディレクトリ以下にバックアップが作成される。
 
 
-g:autobackup_backup_naming			*g:autobackup_backup_naming*
-	既定値: "filename"
-	バックアップファイルのネーミングモードを指定する。以下の文字列から選ぶ
-	。これ以外の文字が使われたときは "filename" と見なされる。
-	文字列		命名規則	名前例~
-	------		--------	------~
-	"filename"	ファイル名	"test.txt.0001"
-	"cpath"		変換されたパス	"%home%usrname%work%test.txt.0001"
-
-	"filename" だと同名のファイルを区別しないので異なるファイルが同じ名前
-	でバックアップされることが起こりうる。
-	"cpath" だとはパス区切りを "%" に変換するのでその心配はない。
-
-
 g:autobackup_config_dir				*g:autobackup_config_dir*
 	既定値: "~/.config/vim/autobackup"
 	このディレクトリ以下には内部で使う設定ファイルが作成される。
-
-
-------------------------------------------------------------------------------
-コマンド					*autobackup-commands*
-
-						*:AbackResetNumber*
-:AbackResetNumber [{filename} {filename} ..]
-:AbackResetNumber [{filename-pattern}]
-	現在編集中ファイルについての、バックアップファイル名として使われる、通
-	し番号をリセットする。
-	ファイル名{filename}を与えるとそのファイルの番号をリセットする。ファイ
-	ル名は複数与えることができる。
-	ファイルネームパターン{filename-pattern}|wildcards|を与えるとマッチす
-	るファイル全てについてリセットされる。ファイルネームパターンの場合は1
-	つしか与えることができない。 >
-
-	:AbackResetNumber	" 現在編集中ファイルの番号をリセットする
-	:AbackResetNumber *.vim	" .vim のバックアップの番号をリセットする
-	:AbackResetNumber *	" 全てのバックアップの番号をリセットする
-
-<	これで番号をリセットしてもバックアップファイルが残っているなら、次の番
-	号はそのバックアップファイルの後のものに修正される。完全にリセットした
-	いなら、バックアップファイルを削除しなければならない。
 
 
 ==============================================================================

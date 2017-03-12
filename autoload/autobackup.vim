@@ -3,11 +3,7 @@ let s:save_cpo = &cpo| set cpo&vim
 scriptencoding utf-8
 "=============================================================================
 let s:TMPEXT = '.0000.vim-autobackup'
-function! s:get_naming() "{{{
-  return g:autobackup_backup_naming ==# 'cpath' ? 'cpath' : 'filename'
-endfunction
-"}}}
-
+let s:NUMDIR = 'pathnums'
 function! autobackup#pre() "{{{
   if &backupdir == '' || g:autobackup_backup_dir == '' || g:autobackup_config_dir == ''
     return
@@ -30,25 +26,23 @@ function! autobackup#post() "{{{
     return
   end
   let &patchmode = s:save_patchmode
-  let naming = s:get_naming()
   let dir = fnamemodify(g:autobackup_config_dir, ':p')
-  if !(isdirectory(dir) && isdirectory(dir. naming. '/'))
-    call mkdir(dir. '/'. naming, 'p')
+  if !(isdirectory(dir) && isdirectory(dir. s:NUMDIR. '/'))
+    call mkdir(dir. '/'. s:NUMDIR, 'p')
   end
-  let cfgdir = dir. '/'. naming. '/'
   let basepath = expand('<afile>:p')
-  let bkfilename = naming ==# 'cpath' ? substitute(basepath, '[:/\\]', '%', 'g') : fnamemodify(basepath, ':t')
-  let path = cfgdir. bkfilename
-  let num = (filereadable(path) ? get(readfile(path), 0, 0) : 0) + 1
+  let bkfilename = substitute(basepath, '[:/\\]', '%', 'g')
+  let numpath = dir. '/'. s:NUMDIR. '/'. bkfilename
+  let num = (filereadable(numpath) ? get(readfile(numpath), 0, 0) : 0) + 1
   let bkpath = printf('%s%s.%04s', s:bkdir, bkfilename, num)
   if filereadable(bkpath)
     let num = s:get_nextnum(bkfilename, num+1)
     let bkpath = printf('%s%s.%04s', s:bkdir, bkfilename, num)
   end
-  let srcpath = basepath. s:TMPEXT
-  if filereadable(srcpath)
-    call rename(srcpath, bkpath)
-    call writefile([num], cfgdir. bkfilename)
+  let tmppath = basepath. s:TMPEXT
+  if filereadable(tmppath)
+    call rename(tmppath, bkpath)
+    call writefile([num], numpath)
   end
   unlet s:save_patchmode s:bkdir
 endfunction
@@ -68,34 +62,6 @@ function! s:get_nextnum(bkfilename, num) "{{{
     let i += 1
   endwhile
   return i
-endfunction
-"}}}
-
-function! autobackup#cmpl_reset_number(arglead, cmdline, csrpos) "{{{
-  let cmpl = __autobackup#lim#cmddef#newCmpl(substitute(a:cmdline, '\t', ' ', 'g'), a:csrpos)
-  return cmpl.filtered(map(split(globpath(g:autobackup_config_dir. '/'. s:get_naming(). '/', '*'), '\n'), 'fnamemodify(v:val, ":t")'))
-endfunction
-"}}}
-function! autobackup#reset_number(...) "{{{
-  let naming = s:get_naming()
-  let dir = fnamemodify(g:autobackup_config_dir, ':p'). naming
-  if !isdirectory(dir)
-    echoh WarningMsg | echo 'config directory is not exists.' | echoh NONE | return
-  end
-  if a:0 == 1
-    for path in split(globpath(dir, a:1), '\n')
-      call delete(path)
-      echo 'reset: "'. fnamemodify(path, ':t'). '"'
-    endfor
-    return
-  end
-  for filename in a:0 ? a:000 : [naming ==# 'cpath' ? expand('%:p:gs?[:/\\]?%?') : expand('%:t')]
-    if delete(dir. '/'. filename)
-      echoh WarningMsg | echo 'not exists : "'. filename. '"' | echoh NONE
-    else
-      echo 'reset: "'. filename. '"'
-    end
-  endfor
 endfunction
 "}}}
 

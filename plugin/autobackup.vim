@@ -4,7 +4,6 @@ scriptencoding utf-8
 "=============================================================================
 let g:autobackup_pattern = get(g:, 'autobackup_pattern', '*')
 let g:autobackup_backup_dir = get(g:, 'autobackup_backup_dir', '~/.backup/vim-autobackup')
-let g:autobackup_backup_naming = get(g:, 'autobackup_backup_naming', 'filename')
 let g:autobackup_config_dir = get(g:, 'autobackup_config_dir', '~/.config/vim/autobackup')
 
 if g:autobackup_pattern==''
@@ -19,7 +18,6 @@ augroup autobackup
    exe 'au BufWritePost,FileWritePost,FileAppendPost' g:autobackup_pattern 'call autobackup#post()'
 augroup END
 
-command! -nargs=*  -complete=customlist,autobackup#cmpl_reset_number AbackResetNumber call autobackup#reset_number(<f-args>)
 "=============================================================================
 "END "{{{1
 let &cpo = s:save_cpo| unlet s:save_cpo

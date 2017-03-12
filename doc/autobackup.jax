@@ -87,9 +87,9 @@ g:autobackup_config_dir				*g:autobackup_config_dir*
 ------------------------------------------------------------------------------
 コマンド					*autobackup-commands*
 
-						*:AbakResetNumber*
-:AbakResetNumber [{filename} {filename} ..]
-:AbakResetNumber [{filename-pattern}]
+						*:AbackResetNumber*
+:AbackResetNumber [{filename} {filename} ..]
+:AbackResetNumber [{filename-pattern}]
 	現在編集中ファイルについての、バックアップファイル名として使われる、通
 	し番号をリセットする。
 	ファイル名{filename}を与えるとそのファイルの番号をリセットする。ファイ
@@ -98,9 +98,9 @@ g:autobackup_config_dir				*g:autobackup_config_dir*
 	るファイル全てについてリセットされる。ファイルネームパターンの場合は1
 	つしか与えることができない。 >
 
-	:AbakResetNumber	" 現在編集中ファイルの番号をリセットする
-	:AbakResetNumber *.vim	" .vim のバックアップの番号をリセットする
-	:AbakResetNumber *	" 全てのバックアップの番号をリセットする
+	:AbackResetNumber	" 現在編集中ファイルの番号をリセットする
+	:AbackResetNumber *.vim	" .vim のバックアップの番号をリセットする
+	:AbackResetNumber *	" 全てのバックアップの番号をリセットする
 
 <	これで番号をリセットしてもバックアップファイルが残っているなら、次の番
 	号はそのバックアップファイルの後のものに修正される。完全にリセットした

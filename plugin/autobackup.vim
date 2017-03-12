@@ -18,7 +18,7 @@ augroup autobackup
    exe 'au BufWritePost,FileWritePost,FileAppendPost' g:autobackup_pattern 'call autobackup#post()'
 augroup END
 
-command! -nargs=*  -complete=customlist,autobackup#cmpl_reset_number AbakResetNumber call autobackup#reset_number(<f-args>)
+command! -nargs=*  -complete=customlist,autobackup#cmpl_reset_number AbackResetNumber call autobackup#reset_number(<f-args>)
 "=============================================================================
 "END "{{{1
 let &cpo = s:save_cpo| unlet s:save_cpo

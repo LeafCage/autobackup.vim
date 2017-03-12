@@ -4,6 +4,7 @@ scriptencoding utf-8
 "=============================================================================
 let g:autobackup_pattern = get(g:, 'autobackup_pattern', '*')
 let g:autobackup_backup_dir = get(g:, 'autobackup_backup_dir', '~/.backup/vim-autobackup')
+let g:autobackup_backup_limit = get(g:, 'autobackup_backup_limit', 100)
 let g:autobackup_config_dir = get(g:, 'autobackup_config_dir', '~/.config/vim/autobackup')
 
 if g:autobackup_pattern==''

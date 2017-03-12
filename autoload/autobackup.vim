@@ -21,6 +21,15 @@ function! autobackup#pre() "{{{
   end
 endfunction
 "}}}
+function! s:make_bkdir() "{{{
+  if mkdir(s:bkdir, 'p')
+    let s:bkdir .= '/'
+  else
+    echoerr 'g:autobackup_backup_dir could not be created: "'. g:autobackup_backup_dir. '"'
+    return 1
+  end
+endfunction
+"}}}
 function! autobackup#post() "{{{
   if !exists('s:save_patchmode')
     return
@@ -43,17 +52,11 @@ function! autobackup#post() "{{{
   if filereadable(tmppath)
     call rename(tmppath, bkpath)
     call writefile([num], numpath)
+    if g:autobackup_backup_limit && num > g:autobackup_backup_limit
+      call delete(printf('%s%s.%04s', s:bkdir, bkfilename, num - g:autobackup_backup_limit))
+    end
   end
   unlet s:save_patchmode s:bkdir
-endfunction
-"}}}
-function! s:make_bkdir() "{{{
-  if mkdir(s:bkdir, 'p')
-    let s:bkdir .= '/'
-  else
-    echoerr 'g:autobackup_backup_dir could not be created: "'. g:autobackup_backup_dir. '"'
-    return 1
-  end
 endfunction
 "}}}
 function! s:get_nextnum(bkfilename, num) "{{{

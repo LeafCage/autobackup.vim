@@ -20,6 +20,13 @@ let g:autobackup_backup_dir = "~/mybackup"
 ```
 
 
+`g:autobackup_backup_limit` でバックアップの量を制限できます。この値を超えると古いものから削除されます。  
+
+```vim
+let g:autobackup_backup_limit = 50
+```
+
+
 バックアップファイル自体をバックアップ対象やファイル名補完から除外するために、 'backupskip' 'wildignore' を設定するとよいでしょう。  
 
 ```vim

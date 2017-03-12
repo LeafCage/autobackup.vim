@@ -2,7 +2,6 @@ if expand('<sfile>:p')!=#expand('%:p') && exists('g:loaded_autobackup')| finish|
 let s:save_cpo = &cpo| set cpo&vim
 scriptencoding utf-8
 "=============================================================================
-let g:autobackup_mode = get(g:, 'autobackup_mode', 'number')
 let g:autobackup_pattern = get(g:, 'autobackup_pattern', '*')
 let g:autobackup_backup_dir = get(g:, 'autobackup_backup_dir', '~/autobackup-vim')
 let g:autobackup_config_dir = get(g:, 'autobackup_config_dir', '~/.config/vim/autobackup')

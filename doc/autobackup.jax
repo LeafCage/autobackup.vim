@@ -53,10 +53,6 @@ https://github.com/LeafCage/autobackup.vim
 と、"test.txt" は例えば "test.txt.0001.vabk" や "test.txt.0002.vabk" のような
 名前でバックアップされます。
 
-|g:autobackup_mode|を "time" にすれば、通し番号でなく、作成した時間でバックア
-ップを作ることができます。 >
-	let g:autobackup_mode = "time"
-
 バックアップファイル自体をバックアップ対象やファイル名補完から除外するために、
 'backupskip' 'wildignore' を設定することができます。 >
 	exe "set backupskip+=*". &patchmode
@@ -68,19 +64,6 @@ https://github.com/LeafCage/autobackup.vim
 
 ------------------------------------------------------------------------------
 変数						*autobackup-variables*
-
-g:autobackup_mode				*g:autobackup_mode*
-	既定値: "number"
-	バックアップファイルの名前の付け方を指定する。以下の文字列から選ぶ。
-		文字列		方式		保存例~
-		------		----		------~
-		"number"	通し番号	test.txt.0003.vabk
-		"time"		作成日時	test.txt.20170101_125820.vabk
-
-	"number" モードの場合、すでに作成されたバックアップファイルを削除して
-	も通し番号が巻き戻ることはない。通し番号をリセットするには
-	|:AbakResetNumber|コマンドを実行する。
-
 
 g:autobackup_pattern				*g:autobackup_pattern*
 	既定値: "*"
@@ -107,8 +90,8 @@ g:autobackup_config_dir				*g:autobackup_config_dir*
 						*:AbakResetNumber*
 :AbakResetNumber [{filename} {filename} ..]
 :AbakResetNumber [{filename-pattern}]
-	"number" モードのときの、編集中ファイルについての、バックアップファイ
-	ル名として使われる、通し番号をリセットする。
+	現在編集中ファイルについての、バックアップファイル名として使われる、通
+	し番号をリセットする。
 	ファイル名{filename}を与えるとそのファイルの番号をリセットする。ファイ
 	ル名は複数与えることができる。
 	ファイルネームパターン{filename-pattern}|wildcards|を与えるとマッチす

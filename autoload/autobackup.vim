@@ -10,23 +10,6 @@ function! autobackup#pre() "{{{
   if !isdirectory(s:bcudir) && s:make_bcudir()
     return
   end
-  if g:autobackup_mode ==# 'time'
-    call s:backup_pre_by_time()
-  else
-    call s:backup_pre_by_number()
-  end
-endfunction
-"}}}
-function! s:make_bcudir() "{{{
-  if mkdir(s:bcudir, 'p')
-    let s:bcudir .= '/'
-  else
-    let g:autobackup_backup_dir = ''
-    return 1
-  end
-endfunction
-"}}}
-function! s:backup_pre_by_number() "{{{
   let filename = expand('<afile>:t')
   let dir = fnamemodify(g:autobackup_config_dir, ':p')
   if !(isdirectory(dir) && isdirectory(dir. 'nextnums/'))
@@ -38,9 +21,13 @@ function! s:backup_pre_by_number() "{{{
   let &patchmode = printf('.%04s%s', s:nextnum, &patchmode)
 endfunction
 "}}}
-function! s:backup_pre_by_time() "{{{
-  let s:save_patchmode = &patchmode
-  let &patchmode = '.'. strftime('%Y%m%d_%H%M%S', localtime()). &patchmode
+function! s:make_bcudir() "{{{
+  if mkdir(s:bcudir, 'p')
+    let s:bcudir .= '/'
+  else
+    let g:autobackup_backup_dir = ''
+    return 1
+  end
 endfunction
 "}}}
 function! autobackup#post() "{{{
@@ -52,15 +39,13 @@ function! autobackup#post() "{{{
   let filename = fnamemodify(base, ':t')
   let bcupath = s:bcudir. filename. &patchmode
   let &patchmode = s:save_patchmode
-  if filereadable(bcupath) && g:autobackup_mode !=# 'time'
+  if filereadable(bcupath)
     let s:nextnum = s:get_nextnum(filename, s:nextnum+1)
     let bcupath = printf('%s%s.%04s%s', s:bcudir, filename, s:nextnum, &patchmode)
   end
   if filereadable(patchmodepath)
     call rename(patchmodepath, bcupath)
-    if g:autobackup_mode !=# 'time'
-      call writefile([s:nextnum+1], fnamemodify(g:autobackup_config_dir, ':p'). '/nextnums/'. filename)
-    end
+    call writefile([s:nextnum+1], fnamemodify(g:autobackup_config_dir, ':p'). '/nextnums/'. filename)
   end
   unlet! s:save_patchmode s:nextnum
 endfunction

@@ -75,7 +75,7 @@ g:autobackup_pattern				*g:autobackup_pattern*
 
 
 g:autobackup_backup_dir				*g:autobackup_backup_dir*
-	既定値: "~/autobackup-vim"
+	既定値: "~/.backup/vim-autobackup"
 	このディレクトリ以下にバックアップが作成される。
 
 

@@ -4,6 +4,34 @@ scriptencoding utf-8
 "=============================================================================
 let s:TMPEXT = '.0000.vim-autobackup'
 let s:NUMDIR = 'pathnums'
+function! s:make_bkdir() "{{{
+  if mkdir(s:bkdir, 'p')
+    let s:bkdir .= '/'
+    return 0
+  end
+  echoerr 'g:autobackup_backup_dir could not be created: "'. g:autobackup_backup_dir. '"'
+  return 1
+endfunction
+"}}}
+function! s:make_cfgdir(dir) "{{{
+  if mkdir(a:dir. '/'. s:NUMDIR, 'p')
+    return 0
+  end
+  echoerr 'g:autobackup_config_dir could not be created: "'. g:autobackup_config_dir. '"'
+  call delete(expand('<afile>:p'). s:TMPEXT)
+  unlet! s:save_patchmode s:bkdir
+  return 1
+endfunction
+"}}}
+function! s:get_nextnum(bkfilename, num) "{{{
+  let i = a:num
+  while filereadable(printf('%s%s.%04s', s:bkdir, a:bkfilename, i))
+    let i += 1
+  endwhile
+  return i
+endfunction
+"}}}
+
 function! autobackup#pre() "{{{
   if &backupdir == '' || g:autobackup_backup_dir == '' || g:autobackup_config_dir == ''
     return
@@ -21,23 +49,14 @@ function! autobackup#pre() "{{{
   end
 endfunction
 "}}}
-function! s:make_bkdir() "{{{
-  if mkdir(s:bkdir, 'p')
-    let s:bkdir .= '/'
-  else
-    echoerr 'g:autobackup_backup_dir could not be created: "'. g:autobackup_backup_dir. '"'
-    return 1
-  end
-endfunction
-"}}}
 function! autobackup#post() "{{{
   if !exists('s:save_patchmode')
     return
   end
   let &patchmode = s:save_patchmode
   let dir = fnamemodify(g:autobackup_config_dir, ':p')
-  if !(isdirectory(dir) && isdirectory(dir. s:NUMDIR. '/'))
-    call mkdir(dir. '/'. s:NUMDIR, 'p')
+  if !(isdirectory(dir) && isdirectory(dir. s:NUMDIR. '/')) && s:make_cfgdir(dir)
+    return
   end
   let basepath = expand('<afile>:p')
   let bkfilename = substitute(basepath, '[:/\\]', '%', 'g')
@@ -57,14 +76,6 @@ function! autobackup#post() "{{{
     end
   end
   unlet s:save_patchmode s:bkdir
-endfunction
-"}}}
-function! s:get_nextnum(bkfilename, num) "{{{
-  let i = a:num
-  while filereadable(printf('%s%s.%04s', s:bkdir, a:bkfilename, i))
-    let i += 1
-  endwhile
-  return i
 endfunction
 "}}}
 

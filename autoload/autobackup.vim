@@ -33,15 +33,15 @@ endfunction
 "}}}
 
 function! autobackup#pre() "{{{
-  if &backupdir == '' || g:autobackup_backup_dir == '' || g:autobackup_config_dir == ''
+  let path = expand('<afile>:p')
+  if path == '' || &backupdir == '' || g:autobackup_backup_dir == '' || g:autobackup_config_dir == ''
     return
   end
   let s:bkdir = fnamemodify(g:autobackup_backup_dir, ':p')
-  if !isdirectory(s:bkdir) && s:make_bkdir()
+  if fnamemodify(path, ':h'). '/' ==? s:bkdir || !isdirectory(s:bkdir) && s:make_bkdir()
     return
   end
   let s:save_patchmode = &patchmode
-  let path = expand('<afile>:p')
   if !(&patchmode == '' || filereadable(path. &patchmode)) && filereadable(path)
     call writefile(readfile(path), path. s:TMPEXT)
   else
@@ -55,7 +55,7 @@ function! autobackup#post() "{{{
   end
   let &patchmode = s:save_patchmode
   let dir = fnamemodify(g:autobackup_config_dir, ':p')
-  if !(isdirectory(dir) && isdirectory(dir. s:NUMDIR. '/')) && s:make_cfgdir(dir)
+  if !(isdirectory(dir) && isdirectory(dir. s:NUMDIR)) && s:make_cfgdir(dir)
     return
   end
   let basepath = expand('<afile>:p')
